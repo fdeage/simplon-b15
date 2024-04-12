@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 import method_kmeans as kmeans
@@ -7,17 +8,20 @@ import method_hierarchical as hierarchical
 
 from processing import get_data
 
-app = FastAPI()
 
-from fastapi.middleware.cors import CORSMiddleware
+def handle_cors(app):
+    # allow everything, yeah!
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    return app
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["GET"],
-    allow_headers=["*"],
-)
+
+app = handle_cors(FastAPI())
 
 
 @app.get("/list_methods", description="List clustering methods")
