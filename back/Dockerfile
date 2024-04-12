@@ -1,4 +1,3 @@
-# FROM pandas/pandas:alpine
 FROM pandas/pandas:alpine
 
 WORKDIR /app

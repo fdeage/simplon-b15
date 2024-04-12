@@ -10,6 +10,7 @@ from processing import get_data
 app = FastAPI()
 
 from fastapi.middleware.cors import CORSMiddleware
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,23 +18,6 @@ app.add_middleware(
     allow_methods=["GET"],
     allow_headers=["*"],
 )
-
-
-
-
-# Affinity Propagation
-# Agglomerative Clustering
-# BIRCH
-# DBSCAN
-# K-Means
-# Mini-Batch K-Means
-# Mean Shift
-# OPTICS
-# Spectral Clustering
-# Mixture of Gaussians
-
-
-
 
 
 @app.get("/list_methods", description="List clustering methods")
@@ -62,10 +46,10 @@ def get_method_score(method_name: str):
         return {"message": f"No method {method_name}"}
 
 
-
 @app.post("/methods/{method_name}/retrain")
 def retrain_method(method_name: str):
     pass
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
