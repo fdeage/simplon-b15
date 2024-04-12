@@ -1,3 +1,4 @@
+# Nothing to install so an alpine image is fine
 FROM python:3.11-alpine
 
 WORKDIR /app

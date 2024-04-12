@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  backend:
+    image: b15-back:latest
+    ports:
+      - "8000:8000"
+
+  frontend:
+    image: b15-front:latest
+    ports:
+      - "8001:8001"
+    environment:
+      BACKEND_URL: http://backend:8000

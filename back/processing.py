@@ -1,6 +1,6 @@
 import pandas as pd
 
-DATASET_PATH = "../../data/customers.csv"
+DATASET_PATH = "./data/customers.csv"
 
 
 def get_data():

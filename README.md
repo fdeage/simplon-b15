@@ -33,6 +33,12 @@ and
 ?> cd front && docker build -t b15-front .
 ```
 
+Then you can use Docker compose:
+```
+?> docker-compose up
+```
+and check your browser on `localhost:8001`.
+
 3. Full deploy:
 
 You will need the [azure CLI](https://learn.microsoft.com/en-us/cli/azure/) installed.
@@ -43,3 +49,8 @@ You will need the [azure CLI](https://learn.microsoft.com/en-us/cli/azure/) inst
 ```
 
 ## Launch tests
+
+
+```
+?> pytest back/
+```

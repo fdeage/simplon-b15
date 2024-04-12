@@ -1,12 +1,20 @@
-FROM pandas/pandas:alpine
+# Starting from an alpine image would save us 50 MB, but it would also
+# considerably slow the install process
+FROM python:3.11-slim
 
 WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+# The requirements.txt file is small so we could write the dependencies
+# directly, like `pip install --no-cache-dir fastapi ...`
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY . .
+# Note that we copy the file requirements.txt twice. The reason is,
+# everything that stays constant from a docker build to another is cached,
+# and therefore not done again. So we can save the "pip install"s and only
+#
 
 EXPOSE 8000
 
