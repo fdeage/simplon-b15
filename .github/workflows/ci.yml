@@ -1,0 +1,42 @@
+name: Azure Deploy
+
+env:
+  AZURE_API_TOKEN: ${{ secrets.AZURE_API_TOKEN }}
+
+on:
+  push:
+    branches:
+      - master
+      - add-ci
+
+jobs:
+  test:
+    name: Test CI
+    runs-on: ubuntu-latest
+    env:
+      VAR_TEST_LOCAL: toto
+
+    if: github.ref == 'refs/heads/add-ci'
+    steps:
+      - name: test
+        run: echo $VAR_TEST_LOCAL
+        run: echo "Secret value is ${{ secrets.VAR_TEST_GITHUB }}"
+
+  deploy-azure:
+    name: Deploy app on Azure
+    runs-on: ubuntu-latest
+    env: 
+      VAR_TEST: toto
+
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: pytest ./back
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Deploy to Azure
+        run: |
+          az webapp up --name my-app-name --sku F1
