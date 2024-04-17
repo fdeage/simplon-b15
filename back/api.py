@@ -2,9 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-import method_kmeans as kmeans
-import method_dbscan as dbscan
-import method_hierarchical as hierarchical
+from clustering import score_dbscan, score_kmeans, score_agglo
 
 from processing import get_data
 
@@ -35,19 +33,30 @@ def get_method_score(method_name: str):
     df = get_data()
 
     if method_name == "k_means":
-        score = kmeans.compute_score(df)
-        return {"resp": "ok", "data": {"score": score}}
+        score = score_kmeans(df)
+        return {
+            "resp": "ok",
+            "data": {"score": score}}
 
     elif method_name == "dbscan":
-        score = dbscan.compute_score(df)
-        return {"resp": "ok", "data": {"score": score}}
+        score = score_dbscan(df)
+        return {
+            "resp": "ok",
+            "data": {"score": score}
+        }
 
     elif method_name == "hierarchical":
-        score = hierarchical.compute_score(df)
-        return {"resp": "ok", "data": {"score": score}}
+        score = score_agglo(df)
+        return {
+            "resp": "ok",
+            "data": {"score": score}
+        }
 
     else:
-        return {"message": f"No method {method_name}"}
+        return {
+            "resp": "ko",
+            "data": {"score": None, "message": f"No method {method_name}"},
+        }
 
 
 @app.post("/methods/{method_name}/retrain")
@@ -56,4 +65,5 @@ def retrain_method(method_name: str):
 
 
 if __name__ == "__main__":
+    print("Launching the back-end...")
     uvicorn.run(app, host="0.0.0.0", port=8000)
