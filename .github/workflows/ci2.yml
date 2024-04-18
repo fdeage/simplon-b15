@@ -7,7 +7,7 @@
 #   push:
 #     branches:
 #       - master
-#       - add-ci
+
 
 # jobs:
 #   test:
@@ -19,7 +19,8 @@
 #     if: github.ref == 'refs/heads/add-ci'
 #     steps:
 #       - name: test
-#         run: echo "Secret value is ${VAR_TEST_LOCAL} ${{ secrets.VAR_TEST_GITHUB }}"
+#         run: echo $VAR_TEST_LOCAL
+#         run: echo "Secret value is ${{ secrets.VAR_TEST_GITHUB }}"
 
 #   deploy-azure:
 #     name: Deploy app on Azure
@@ -27,9 +28,11 @@
 #     env:
 #       VAR_TEST: toto
 
-#     if: github.ref == 'refs/heads/add-ci'
+#     if: github.ref == 'refs/heads/master'
 #     steps:
-#       - uses: actions/checkout@v2
+#       - uses: actions/checkout@v4
+#       - name: Build Docker image
+#         run: docker build -t fdeage/b15-back:latest .
 #       - name: Run tests
 #         run: pytest ./back
 #       - name: Login to Azure

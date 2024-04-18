@@ -1,0 +1,22 @@
+name: Azure Deploy 3
+
+on:
+  push:
+    branches:
+      - add-ci
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure Web App Deploy
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'felix-all'
+          package: '.'
+
