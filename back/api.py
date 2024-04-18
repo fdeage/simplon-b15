@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from clustering import score_dbscan, score_kmeans, score_agglo
-
 from processing import get_data
 
 
@@ -11,11 +10,12 @@ def handle_cors(app):
     # allow everything, yeah!
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
         allow_credentials=True,
+        allow_origins=["*"],
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
     return app
 
 
@@ -34,27 +34,19 @@ def get_method_score(method_name: str):
 
     if method_name == "k_means":
         score = score_kmeans(df)
-        return {
-            "resp": "ok",
-            "data": {"score": score}}
+        return {"resp": "ok", "data": {"score": score}}
 
     elif method_name == "dbscan":
         score = score_dbscan(df)
-        return {
-            "resp": "ok",
-            "data": {"score": score}
-        }
+        return {"resp": "ok", "data": {"score": score}}
 
     elif method_name == "hierarchical":
         score = score_agglo(df)
-        return {
-            "resp": "ok",
-            "data": {"score": score}
-        }
+        return {"resp": "ok", "data": {"score": score}}
 
     else:
         return {
-            "resp": "ko",
+            "resp": "error",
             "data": {"score": None, "message": f"No method {method_name}"},
         }
 

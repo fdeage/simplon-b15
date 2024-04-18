@@ -1,10 +1,15 @@
+BACKEND_URL = "http://localhost"
+BACKEND_PORT = 8000
+
 const dropdown = document.getElementById('methodsDropdown');
+const score = document.getElementById('score');
 
 function listMethods() {
-    fetch('http://localhost:8000/list_methods')
+    console.log("Listing methods...");
+
+    fetch(`${BACKEND_URL}:${BACKEND_PORT}/list_methods`)
         .then(response => response.json())
         .then(data => {
-            // const dropdown = document.getElementById('methodsDropdown');
             data.methods.forEach(method => {
                 const option = document.createElement('option');
                 option.value = method;
@@ -12,16 +17,17 @@ function listMethods() {
                 dropdown.appendChild(option);
             });
         })
-        .catch(error => console.error('Error fetching methods:', error));
+        .catch(error => {
+            console.error('Error fetching methods:', error);
+            score.innerText = "Can't fetch methods"
+        });
 }
 listMethods();
 
 function requestScore() {
-    const dropdown = document.getElementById('methodsDropdown');
-    const score = document.getElementById('score');
 
     method = dropdown.value;
-    fetch('http://localhost:8000/methods/' + method + '/score')
+    fetch(`${BACKEND_URL}:${BACKEND_PORT}/methods/${method}/score`)
         .then(response => response.json())
         .then(data => {
             console.log(data);
